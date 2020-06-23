@@ -1,3 +1,6 @@
+change at the beginning
+hello world
+
 require 'git'
 require 'logger'
 
@@ -5,8 +8,7 @@ require 'logger'
 require 'open3'
 
 
-logger = Logger.new(STDOUT)
-logger.level = Logger::ERROR
+
 
 g = Git.open('.', :log => logger)
 
@@ -27,6 +29,11 @@ puts modified_file_names
 puts 'added'
 puts added_file_names
 
+puts 'new lines'
+asda;dk;lasd
+a;sdka;sdasd
+end of my new line
+
 puts 'deleted'
 puts deleted_file_names
 
@@ -36,7 +43,7 @@ puts deleted_file_names
 
 puts '-----------------------------'
 
-modified_file_names.each {|modified_file_name|
+modified_file modifying this line in line ha haha ha _names.each {|modified_file_name|
     puts "modified_file_name #{modified_file_name}"
     patch = g.diff('master', 'feature2').path(modified_file_name).patch
     #puts patch
@@ -47,12 +54,19 @@ modified_file_names.each {|modified_file_name|
     }
 }
 
+another nice change of line
 
 #puts g.diff('master', 'feature').path('f.txt').stats
 
 #puts g.diff('master', 'feature').path('f.txt').patch `diff-lines`
 
+a block of
+change
+exists here
+
 #puts '-------'
+
+finally a brand new block
 
 
 
