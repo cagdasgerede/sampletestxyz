@@ -1,0 +1,58 @@
+require 'git'
+require 'logger'
+
+
+require 'open3'
+
+
+logger = Logger.new(STDOUT)
+logger.level = Logger::ERROR
+
+g = Git.open('.', :log => logger)
+
+# {"f.txt"=>"M", "g.txt"=>"A", "h.txt"=>"D"}
+g.diff('master', 'feature2').name_status.each do |key, value|
+    puts key, value
+end
+
+x = g.diff('master', 'feature2').name_status
+modified_file_names = x.filter {|k,v| v == 'M'}.keys
+deleted_file_names = x.filter {|k,v| v == 'D'}.keys
+added_file_names = x.filter {|k,v| v == 'A'}.keys
+
+puts 'modified_file_names'
+puts modified_file_names
+
+
+puts 'added'
+puts added_file_names
+
+puts 'deleted'
+puts deleted_file_names
+
+# We ignore deleted files.
+# All errors in added files should be reported.
+# For all modified files, we need to extract the line numbers
+
+puts '-----------------------------'
+
+modified_file_names.each {|modified_file_name|
+    puts "modified_file_name #{modified_file_name}"
+    patch = g.diff('master', 'feature2').path(modified_file_name).patch
+    #puts patch
+
+    #puts "=============================="
+    matches = patch.match(/@@ .[0-9]+ .([0-9]+),([0-9]+) @@/) { |match|
+        puts "start: #{match[1]}; end: #{match[2]}"
+    }
+}
+
+
+#puts g.diff('master', 'feature').path('f.txt').stats
+
+#puts g.diff('master', 'feature').path('f.txt').patch `diff-lines`
+
+#puts '-------'
+
+
+
